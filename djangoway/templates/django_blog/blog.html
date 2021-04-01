@@ -6,16 +6,17 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
         #the_list>li:nth-of-type(2)>a{
-            color: white;
+          text-decoration: underline;
         }
         .circle {
             border-radius: 30%;
             height: 120px;
-            width: 100px;
+            width: 120px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+
             }
     </style>
 
@@ -31,22 +32,35 @@
               
               <h2 class="text-center mb-4 col-12">User Registration</h2>
               
-              <div class="row mb-3 justify-content-center col-12 ml-3">
-              <i class="fa fa-calendar mr-3 mb-2"> 29 - 10 - 2021 </i>
-              <i class="fa fa-user mr-3 mb-2"> Aremu Azeez</i>
-              <i class="fa fa-clock mr-3"> 10 mins read </i>
-              <i class="fa fa-eye "> 100 views </i>
+              <div class="mb-3 text-center ml-3">
+              <i class="fa fa-calendar mb-2"> <span class="px-2">29 - 10 - 2021</span> </i>
+              <i class="fa fa-user mb-2"><span class="px-2">Aremu Azeez </span> </i>
+              <i class="fa fa-clock mr-3"><span class="px-2"> 10 mins read</span> </i>
+              <i class="fa fa-eye "><span class="px-2"> 100 views</span> </i>
               </div>
               <img src="{% static 'images/mtn.jpg' %}" style="width:70%; height:auto" class="center img-fluid mx-auto rounded mb-4 mt-2">
           <p class="text-left pl-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, tempora pariatur libero quas expedita consectetur delectus hic vero. 
               Aliquid velit culpa iusto recusandae quis in asperiores, reiciendis sed eveniet labore!
           </p>
 
-          <div class="row mb-3 ml-3 col-12 pl-0 mt-5">
-              <h5 class="mr-3 bg-info rounded px-2 text-white py-2">django</h5>
-              <h5 class="mr-3 bg-info rounded px-2 text-white py-2">Dart</h5>
-              <h5 class="mr-3 bg-info rounded px-2 text-white py-2">SQL</h5>
-              <small class="ml-auto"><ul class="list-inline mr-3 ml-sm-4 ">
+          <div class="row mb-3 ml-3 mt-5 ">
+              
+              <div class="col-12 py-2 d-flex justify-content-start">
+                <ul class="list-inline mr-3">
+                  <li class="list-inline-item mr-3">
+                    <h5 class="bg-info rounded px-2 text-white py-2">django</h5>
+                  </li>
+                  <li class="list-inline-item mr-3">
+                    <h5 class="bg-info rounded px-2 text-white py-2">Dart</h5>
+                  </li>
+                  <li class="list-inline-item mr-3">
+                    <h5 class="bg-info rounded px-2 text-white py-2">SQL</h5>
+                  </li>
+                </ul>
+              
+              </div>
+           
+              <small class="col-12 d-flex justify-content-start py-2"><ul class="list-inline mr-3">
                   <li class="list-inline-item mr-3">
                     <a href="#">
                       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-facebook text-info" viewBox="0 0 16 16">
@@ -78,16 +92,17 @@
                 </ul></small>
                 
           </div>
-          <div class="row">
-            <div class="circle  col-2">
-                <img  class="rounded-circle mt-3" src="{% static 'images/author.jpg'%}" style="width:80%; height:100px" >
+          <div class="row shadow px-0">
+            <div class="circle">
+                <img  class="rounded-circle mt-3" src="{% static 'images/author.jpg'%}" style="width:100%; height:100px" >
             </div>
-            <div class="col-10">
-            <h2 class="mt-4 pl- h4">Aremu Azeez Taiwo</h2>
-            <p>I'm a passionate software developer and researcher. I write about Python, Django and Web Development on a weekly basis. <a href='#'>Read more >></a></p>
-        </div>
-        </div>
+            <div class="col-12 col-sm-8">
+              <h2 class="mt-4 p">Aremu Azeez Taiwo</h2>
+              <p>I'm a passionate software developer and researcher. I write about Python, Django and Web Development on a weekly basis. <a href="{% url 'author' %}">Read more >></a></p>
+            </div>
+          </div>
       </div>
+</div>
 </div>
 
 {% endblock %}
