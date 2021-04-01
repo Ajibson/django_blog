@@ -18,6 +18,24 @@
             align-items: center;
 
             }
+            @media (max-width: 490px) {
+              #main{
+                padding-bottom: 50%;
+
+              }
+              #image{
+                width: 100%;
+                height: 25%
+              }
+            }
+
+            @media (min-width: 490px) {
+            
+              #image{
+                width: 50%;
+                height: 35%
+              }
+            }
     </style>
 
 {% endblock %}
@@ -26,36 +44,31 @@
 {% block content %}
 
 <div class="container mt-5">
-    <div class="row justify-content-center shadow">
+    <div class="row justify-content-center shadow" id="main">
         
           <div class="row text-left mb-3 col-10 rounded bg-white  pt-3">
               
-              <h2 class="text-center mb-4 col-12">User Registration</h2>
+              <h2 class="text-center mb-4 col-12">{{article.title}}</h2>
               
               <div class="mb-3 text-center ml-3">
-              <i class="fa fa-calendar mb-2"> <span class="px-2">29 - 10 - 2021</span> </i>
-              <i class="fa fa-user mb-2"><span class="px-2">Aremu Azeez </span> </i>
-              <i class="fa fa-clock mr-3"><span class="px-2"> 10 mins read</span> </i>
-              <i class="fa fa-eye "><span class="px-2"> 100 views</span> </i>
+              <i class="fa fa-calendar mb-2"> <span class="px-2">{{article.date_published}}</span> </i>
+              <i class="fa fa-user mb-2"><span class="px-2">{{article.author}}</span> </i>
+              <i class="fa fa-clock mr-3"><span class="px-2">{{article.read_time}}mins read</span> </i>
+              <i class="fa fa-eye "><span class="px-2"> {{article.views|length}} views</span> </i>
               </div>
-              <img src="{% static 'images/mtn.jpg' %}" style="width:70%; height:auto" class="center img-fluid mx-auto rounded mb-4 mt-2">
-          <p class="text-left pl-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, tempora pariatur libero quas expedita consectetur delectus hic vero. 
-              Aliquid velit culpa iusto recusandae quis in asperiores, reiciendis sed eveniet labore!
+              <img src="{{article.image.url}}"  class="center img-fluid mx-auto rounded mb-4 mt-2" id="image">
+          <p class="text-left pl-3">{{article.content|safe}}
           </p>
 
           <div class="row mb-3 ml-3 mt-5 ">
               
               <div class="col-12 py-2 d-flex justify-content-start">
                 <ul class="list-inline mr-3">
+                  {% for tag in article.tags.all %}
                   <li class="list-inline-item mr-3">
-                    <h5 class="bg-info rounded px-2 text-white py-2">django</h5>
+                    <h5 class="bg-info rounded px-2 text-white py-2">{{tag}}</h5>
                   </li>
-                  <li class="list-inline-item mr-3">
-                    <h5 class="bg-info rounded px-2 text-white py-2">Dart</h5>
-                  </li>
-                  <li class="list-inline-item mr-3">
-                    <h5 class="bg-info rounded px-2 text-white py-2">SQL</h5>
-                  </li>
+                  {% endfor %}
                 </ul>
               
               </div>

@@ -3,12 +3,20 @@ from .forms import *
 from django.contrib import messages
 
 def home(request):
+    try:
+        articles = blogs.objects.all()
+    except blogs.DoesNotExist:
+        messages.error(request, 'No blog post')
+        return redirect('home')
+    return render(request, 'django_blog/base.html', {'articles':articles})
 
-    return render(request, 'django_blog/base.html')
-
-def tutorial(request):
-
-    return render(request, 'django_blog/blog.html')
+def tutorial(request,slug_title):
+    try:
+        article = blogs.objects.get(slug = slug_title)
+    except blogs.DoesNotExist:
+        messages.error(request, 'No blog post')
+        return redirect('home')
+    return render(request, 'django_blog/blog.html', {'article':article})
 
 def article(request):
     if request.method == 'POST':
