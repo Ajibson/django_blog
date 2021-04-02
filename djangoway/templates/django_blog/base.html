@@ -103,9 +103,7 @@
         <i class="fa fa-user mb-2"><span class="px-2">{{article.author}} </span> </i>
         <i class="fa fa-clock mr-3"><span class="px-2">{{article.read_time}} mins read</span> </i>
         <i class="fa fa-eye "><span class="px-2"> {{article.views|length}} views</span> </i>
-        <a href="#" class="mr-auto px-5 mx-5" style="text-decoration: none;" id="hand" onclick="claps()">
-         <span id="clap"> 20 </span> 👏
-        </a>
+       
       </div>
 
       <p class="border">  {{article.content|safe|truncatechars:320}}    </p>
@@ -184,14 +182,14 @@
       <script src="{% static 'js/popper.min.js'%}"></script> 
 
       <script>
-        function claps(){
+        /*function claps(){
           var hand = document.getElementById('hand');
           var clap = document.getElementById('clap');
           clap.innerHTML += 1
         }
+        */
         
-        
-      </script>
+      </script> 
       
 </body>
 </html>

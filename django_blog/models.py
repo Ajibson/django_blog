@@ -43,3 +43,10 @@ class blogs(models.Model):
         self.read_time = read_time(self.content)
         super(blogs, self).save(*args, **kwargs)
 
+
+class clap(models.Model):
+    blog = models.ForeignKey(blogs, on_delete=models.CASCADE)
+    number_of_clap = models.PositiveIntegerField(default = 0)
+
+    def __str__(self):
+        return (self.blog.title + "   " + str(self.number_of_clap) + ' claps')

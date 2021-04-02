@@ -9,3 +9,8 @@ class IpmodelAdmin(admin.ModelAdmin):
 @admin.register(blogs)
 class blogsAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(clap)
+class clapAdmin(admin.ModelAdmin):
+    pass
+

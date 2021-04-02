@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import *
 from django.contrib import messages
+from django.http import HttpResponse
+import json
 
 def home(request):
     try:
@@ -13,16 +15,19 @@ def home(request):
 def tutorial(request,slug_title):
     try:
         article = blogs.objects.get(slug = slug_title)
-    except blogs.DoesNotExist:
+        number_of_claps = clap.objects.get(blog = article.pk).number_of_clap
+    except (blogs.DoesNotExist, clap.DoesNotExist):
         messages.error(request, 'No blog post')
         return redirect('home')
-    return render(request, 'django_blog/blog.html', {'article':article})
+    return render(request, 'django_blog/blog.html', {'article':article, 'claps':number_of_claps})
 
 def article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            post = clap(number_of_clap=0, blog=blogs.objects.get(title = request.POST.get('title')))
+            post.save()
             messages.success(request, 'Article saved successfully')
             return redirect('article')
     else:
@@ -46,3 +51,26 @@ def edit_blog(request, slug_title):
         form = ArticleForm()
         article = blogs.objects.get(slug = slug_title)
     return render(request, 'django_blog/edit_article.html', {'form':form, 'article':article})
+
+
+def claps(request):
+    if request.method == 'POST':
+        post_clap = request.POST.get('number_of_clap')
+        blog_slug = request.POST.get('blog')
+        response_data = {}
+        post = clap.objects.get(blog=blogs.objects.get(slug = blog_slug))
+        post.number_of_clap = post_clap
+        post.save()
+        response_data['result'] = 'Create post successful!'
+        response_data['postpk'] = post.pk
+        response_data['text'] = post.number_of_clap
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )

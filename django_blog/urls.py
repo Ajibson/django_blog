@@ -7,5 +7,6 @@ urlpatterns = [
     path('tutorial/<slug:slug_title>', views.tutorial, name = 'tutorial'),
     path('article', views.article, name = 'article'),
     path('author/', views.author, name = 'author'),
-    path('blog/<slug:slug_title>', views.edit_blog, name = 'edit_blog')
+    path('blog/<slug:slug_title>', views.edit_blog, name = 'edit_blog'),
+    path('tutorial/claps/', views.claps, name = 'clap')
 ]

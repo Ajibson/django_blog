@@ -36,6 +36,18 @@
                 height: 35%
               }
             }
+
+            @media (max-width: 779px){
+              #main{
+                padding-bottom: 30%;
+              }
+            }
+
+            @media (min-width: 780px){
+              #main{
+                padding-bottom: 10%;
+              }
+            }
     </style>
 
 {% endblock %}
@@ -44,7 +56,7 @@
 {% block content %}
 
 <div class="container mt-5">
-    <div class="row justify-content-center shadow" id="main">
+    <div class="row justify-content-center shadow mb-5 " id="main" >
         
           <div class="row text-left mb-3 col-10 rounded bg-white  pt-3">
               
@@ -55,6 +67,12 @@
               <i class="fa fa-user mb-2"><span class="px-2">{{article.author}}</span> </i>
               <i class="fa fa-clock mr-3"><span class="px-2">{{article.read_time}}mins read</span> </i>
               <i class="fa fa-eye "><span class="px-2"> {{article.views|length}} views</span> </i>
+              <form action="/" method="POST" id="task-form" class="mt-2 px-4">
+                {% csrf_token %}
+                <input type="hidden" name="csrf-token" value="59655fo482a6522asd525582dfhfytndiskrx4">
+                 <spam id="clap_id" name = '{{article.slug}}' >{{claps}}</spam> <span onclick="create_post()">👏</span> 
+               
+             </form>
               </div>
               <img src="{{article.image.url}}"  class="center img-fluid mx-auto rounded mb-4 mt-2" id="image">
           <p class="text-left pl-3">{{article.content|safe}}
@@ -102,20 +120,69 @@
                         </svg>
                     </a>
                   </li>
-                </ul></small>
+                </ul> </small>
                 
           </div>
-          <div class="row shadow px-0">
-            <div class="circle">
-                <img  class="rounded-circle mt-3" src="{% static 'images/author.jpg'%}" style="width:100%; height:100px" >
-            </div>
-            <div class="col-12 col-sm-8">
-              <h2 class="mt-4 p">Aremu Azeez Taiwo</h2>
-              <p>I'm a passionate software developer and researcher. I write about Python, Django and Web Development on a weekly basis. <a href="{% url 'author' %}">Read more >></a></p>
-            </div>
-          </div>
+         
       </div>
 </div>
+<div class="row shadow px-0">
+  <div class="circle">
+      <img  class="rounded-circle mt-3" src="{% static 'images/author.jpg'%}" style="width:100%; height:100px" >
+  </div>
+  <div class="col-12 col-sm-8">
+    <h2 class="mt-4 p">Aremu Azeez Taiwo</h2>
+    <p>I'm a passionate software developer and researcher. I write about Python, Django and Web Development on a weekly basis. <a href="{% url 'author' %}">Read more >></a></p>
+  </div>
 </div>
+</div>
+<script src="{% static 'js/main.js' %}"></script>
 
+<script>
+  function claps(){
+    console.log("form submitted!");
+    create_post();
+  }
+
+// AJAX for posting
+function create_post() {
+    console.log("create post is working!") // sanity check
+    console.log(token)
+    $.ajax({
+        url : "claps/", // the endpoint
+        method : "POST", // http method
+        data : { number_of_clap : $('#clap_id').val() + 1 , blog:$('#clap_id').attr("name"), csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()}, // data sent with the post request
+       
+        // handle a successful response
+        success : function(json) {
+            console.log(json); // log the returned json to the console
+            console.log("success"); // another sanity check
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+function create_post(){
+        var gotten_claps = document.getElementById('clap_it').innerHTML;
+        gotten_claps +=1
+        $.ajax({
+            type:'POST',
+            url:'{% url "clap" %}',
+            data:
+            {
+              number_of_clap : gotten_claps, blog:$('#clap_id').attr("name"),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success:function(){
+                  alert('Saved');
+                    }
+            })
+        };
+</script>
 {% endblock %}
