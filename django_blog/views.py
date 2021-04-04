@@ -4,6 +4,16 @@ from django.contrib import messages
 from django.http import HttpResponse
 import json
 
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 def home(request):
     try:
         articles = blogs.objects.all()
@@ -16,6 +26,17 @@ def tutorial(request,slug_title):
     try:
         article = blogs.objects.get(slug = slug_title)
         number_of_claps = clap.objects.get(blog = article.pk).number_of_clap
+        ip = get_client_ip(request)
+        ip_check = [i.ip for i in article.views.all()]
+        if IpModel.objects.filter(ip = ip).exists() and ip in ip_check:
+            pass
+        elif ip in ip_check:
+            pass
+        elif not IpModel.objects.filter(ip = ip).exists():
+            IpModel.objects.create(ip = ip)
+            article.views.add(IpModel.objects.get(ip = ip))
+        else:
+            article.views.add(IpModel.objects.get(ip = ip))
     except (blogs.DoesNotExist, clap.DoesNotExist):
         messages.error(request, 'No blog post')
         return redirect('home')
@@ -53,13 +74,15 @@ def edit_blog(request, slug_title):
     return render(request, 'django_blog/edit_article.html', {'form':form, 'article':article})
 
 
+
+
 def claps(request):
     if request.method == 'POST':
         post_clap = request.POST.get('number_of_clap')
         blog_slug = request.POST.get('blog')
         response_data = {}
         post = clap.objects.get(blog=blogs.objects.get(slug = blog_slug))
-        post.number_of_clap = post_clap
+        post.number_of_clap =  int(post_clap) + 1
         post.save()
         response_data['result'] = 'Create post successful!'
         response_data['postpk'] = post.pk
