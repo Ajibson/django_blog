@@ -8,6 +8,47 @@
         #the_list>li:nth-of-type(2)>a{
           text-decoration: underline;
         }
+                        /* Dropdown Button */
+                        .dropbtn {
+          background-color: (52, 58, 64);
+          color: white;
+          padding: 8px;
+          font-size: 16px;
+          border: none;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 200px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px; 
+          text-decoration: none;
+          display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd;}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
         .circle {
             border-radius: 30%;
             height: 120px;
@@ -55,7 +96,7 @@
 {% load static  %}
 {% block content %}
 
-<div class="container mt-5">
+<div class="container mt-5 bg-white">
     <div class="row justify-content-center shadow mb-5 " id="main" >
         
           <div class="row text-left mb-3 col-10 rounded bg-white  pt-3">
@@ -132,7 +173,7 @@
   </div>
   <div class="col-12 col-sm-8">
     <h2 class="mt-4 p">Aremu Azeez Taiwo</h2>
-    <p>I'm a passionate software developer and researcher. I write about Python, Django and Web Development on a weekly basis. <a href="{% url 'author' %}">Read more >></a></p>
+    <p>I'm a passionate backend developer, a lover of python and django web framework. I write about Python, Django and Web Development on a weekly basis. <a href="{% url 'author' %}">Read more >></a></p>
   </div>
 </div>
 </div>
@@ -144,29 +185,6 @@
     create_post();
   }
 
-// AJAX for posting
-function create_post() {
-    console.log("create post is working!") // sanity check
-    console.log(token)
-    $.ajax({
-        url : "claps/", // the endpoint
-        method : "POST", // http method
-        data : { number_of_clap : $('#clap_id').val() + 1 , blog:$('#clap_id').attr("name"), csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()}, // data sent with the post request
-       
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            console.log("success"); // another sanity check
-        },
-
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-};
 
 function create_post(){
         var gotten_claps = document.getElementById('clap_id').innerHTML

@@ -22,10 +22,52 @@
         #the_list>li:first-of-type>a{
             text-decoration: underline;
         }
+
+                /* Dropdown Button */
+        .dropbtn {
+          background-color: (52, 58, 64);
+          color: white;
+          padding: 8px;
+          font-size: 16px;
+          border: none;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 200px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px; 
+          text-decoration: none;
+          display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd;}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
     </style>
     {% endblock %}
 </head>
-<body>
+<body class="bg-light">
   <nav class="navbar navbar-expand-lg navbar-light bg-dark ">
     <div class="container-fluid px-5">
       <a class="navbar-brand text-info " href="#"><span class="h2">Django</span><span class="text-warning h2">Way</span></a>
@@ -40,8 +82,15 @@
           <li class="nav-item">
             <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}" >Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'home' %}">Tutorials</a>
+          <li class="nav-item dropbtn">
+            <div class="dropdown">
+              Tutorials
+              <div class="dropdown-content">
+                {% for article in articles %}
+                <a href="{% url 'tutorial' article.slug %}">{{article.title}}</a>
+                {% endfor %}
+              </div>
+            </div>
           </li>
           {% if request.user.is_superuser %}
           <li class="nav-item">
@@ -62,9 +111,12 @@
           <li class="nav-item">
             <a class="nav-link text-white" href="#" tabindex="-1" aria-disabled="true">Author</a>
           </li>
+          
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+
+        
+        <form class="d-flex" action="{% url 'search' %}" method="GET">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_value">
           <button class="btn btn-outline-info" type="submit">Search</button>
         </form>
       </div>
@@ -102,7 +154,7 @@
         <i class="fa fa-calendar mb-2"> <span class="px-2">{{article.date_published}}</span> </i>
         <i class="fa fa-user mb-2"><span class="px-2">{{article.author}} </span> </i>
         <i class="fa fa-clock mr-3"><span class="px-2">{{article.read_time}} mins read</span> </i>
-        <i class="fa fa-eye "><span class="px-2"> {{article.views|length}} views</span> </i>
+        <i class="fa fa-eye "><span class="px-2"> {{article.views.all|length}} views</span> </i>
        
       </div>
 

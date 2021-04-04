@@ -3,6 +3,7 @@ from .forms import *
 from django.contrib import messages
 from django.http import HttpResponse
 import json
+from django.db.models import Q
 
 
 def get_client_ip(request):
@@ -16,14 +17,15 @@ def get_client_ip(request):
 
 def home(request):
     try:
-        articles = blogs.objects.all()
+        articles = blogs.objects.filter(status = 'Published').order_by('-date_published')
     except blogs.DoesNotExist:
         messages.error(request, 'No blog post')
-        return redirect('home')
+        return render(request, 'django_blog/base.html')
     return render(request, 'django_blog/base.html', {'articles':articles})
 
 def tutorial(request,slug_title):
     try:
+        articles = blogs.objects.filter(status = 'Published').order_by('-date_published')
         article = blogs.objects.get(slug = slug_title)
         number_of_claps = clap.objects.get(blog = article.pk).number_of_clap
         ip = get_client_ip(request)
@@ -39,8 +41,8 @@ def tutorial(request,slug_title):
             article.views.add(IpModel.objects.get(ip = ip))
     except (blogs.DoesNotExist, clap.DoesNotExist):
         messages.error(request, 'No blog post')
-        return redirect('home')
-    return render(request, 'django_blog/blog.html', {'article':article, 'claps':number_of_claps})
+        return render(request, 'django_blog/base.html')
+    return render(request, 'django_blog/blog.html', {'article':article, 'claps':number_of_claps, 'articles':articles})
 
 def article(request):
     if request.method == 'POST':
@@ -97,3 +99,14 @@ def claps(request):
             json.dumps({"nothing to see": "this isn't happening"}),
             content_type="application/json"
         )
+
+def search(request):
+    q = request.GET['search_value'].split()  # I am assuming space separator in URL like "random stuff"
+    query = Q()
+    for word in q:
+        query = query | Q(title__icontains=word, status = 'Published') | Q(tags__name__icontains=word, status = 'Published')
+    results = blogs.objects.filter(query).distinct()
+
+    return render(request, 'django_blog/base.html', {'articles':results})
+
+
