@@ -84,7 +84,7 @@
           </li>
           <li class="nav-item dropbtn">
             <div class="dropdown">
-              Tutorials
+              <a>Tutorials</a>
               <div class="dropdown-content">
                 {% for article in articles %}
                 <a href="{% url 'tutorial' article.slug %}">{{article.title}}</a>

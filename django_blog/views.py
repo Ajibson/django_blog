@@ -109,4 +109,8 @@ def search(request):
 
     return render(request, 'django_blog/base.html', {'articles':results})
 
+def view_404(request, exception):
+
+    return render(request, '404.html')
+
 
