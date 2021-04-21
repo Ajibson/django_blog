@@ -5,6 +5,22 @@ from django.utils.text import slugify
 from django_blog.utils.blog_utils import count_words, read_time
 from django_resized import ResizedImageField
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+
+class User(AbstractUser):
+    username = models.CharField(max_length=150, unique=True, blank=True)
+    email = models.EmailField(verbose_name = 'email', max_length=255, unique=True)
+    password = models.CharField(max_length=100, unique=True, blank=True)
+    date_joined = models.DateTimeField(default = timezone.now, blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = [
+        'password','username'
+    ]
+
+    def get_email(self):
+        return self.email
 
 class IpModel(models.Model):
     ip = models.CharField(max_length = 150)
@@ -50,3 +66,5 @@ class clap(models.Model):
 
     def __str__(self):
         return (self.blog.title + "   " + str(self.number_of_clap) + ' claps')
+
+#class comment(models.Model):

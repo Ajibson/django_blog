@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models import (IpModel,blogs,clap,User)
 
 
 @admin.register(IpModel)
@@ -14,3 +14,6 @@ class blogsAdmin(admin.ModelAdmin):
 class clapAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    pass

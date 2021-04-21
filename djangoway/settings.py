@@ -21,11 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '*-h9sn)nx@js9^lgnn5rm1ksbq5^f&gyjr3(k&(&8icc1@vkj='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 
-
+AUTH_USER_MODEL = "django_blog.User"
 # Application definition
 
 INSTALLED_APPS = [
@@ -120,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -138,3 +139,5 @@ CKEDITOR_CONFIGS = {
          ]),
          },
 }
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'

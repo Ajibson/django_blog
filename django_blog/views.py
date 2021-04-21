@@ -6,6 +6,25 @@ import json
 from django.db.models import Q
 
 
+
+
+def signup(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            username = form.cleaned_data.get("email")
+            user.username = username
+            user.set_password(form.cleaned_data.get("password"))
+            print(username)
+            user.save()
+        else:
+            print("not valid")
+    else:
+        form = SignupForm()
+    return render(request, 'django_blog/signup.html', {'form':form})
+
+
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
