@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'ckeditor',
     'taggit',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
