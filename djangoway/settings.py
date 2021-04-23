@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+import dj_database_url
 
 MESSAGE_TAGS = {            
     messages.DEBUG : 'alert-info',
@@ -18,12 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*-h9sn)nx@js9^lgnn5rm1ksbq5^f&gyjr3(k&(&8icc1@vkj='
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost','zuri-blog-task.herokuapp.com']
 
 AUTH_USER_MODEL = "django_blog.User"
 # Application definition
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,6 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'djangoway.urls'
+
 
 TEMPLATES = [
     {
@@ -82,6 +85,8 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -120,7 +125,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -145,3 +154,11 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT = 'home'
 #LOGOUT_REDIRECT_URL = 'login'
+
+
+CLOUDINARY_STORAGE = {
+     'CLOUD_NAME': os.environ.get('hlshvtgcr'),
+     'API_KEY': os.environ.get('536225633657556'),
+     'API_SECRET': os.environ.get('dECnWjhemAeAWf3qXay8dj_RvvI'),
+      }
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
