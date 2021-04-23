@@ -98,29 +98,24 @@
 
 <div class="container col-4 mt-5 pt-5 ">
     <div class="row shadow pb-5 pt-3">
-        <h1>Sign Up Form</h1>
-        <form method="POST" action="{% url 'signup' %}">
+        <h1 class="mb-4">Login Form</h1>
+        <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
             <div class="mb-3">
-                {% if form.email.errors %}
-                {% for error in form.email.errors %}
-                <label class="form-control px-0 mx-0 border-0 text-danger bg-light">{{error}}</label>
-                {% endfor %}
+                {% if msg %}
+                
+                <label class="form-control px-0 mx-0 border-0 text-danger bg-light">{{msg}}</label>
+                
                 {% endif %}
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
             </div>
             <div class="mb-3">
-                {% if form.password.errors %}
-                {% for error in form.password.errors %}
-                <label class="form-control px-0 mx-0 border-0 text-danger bg-light">{{error}}</label>
-                {% endfor %}
-                {% endif %}
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1" name = 'password'>
             </div>
-            <a class="text-left pt-4" href="{% url 'login' %}" style="text-decoration:none">Registered User? Login</a>
-            <button type="submit" class="btn btn-block col-12 mt-3 btn-primary ">Register</button>
+           <a class="text-left pt-4" href="{% url 'signup' %}" style="text-decoration:none">New User? Register</a>
+            <button type="submit" class="btn btn-block col-12 mt-3 btn-primary ">Login</button>
         </form>
 
     </div>

@@ -79,9 +79,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="the_list">
+        {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link active text-white" aria-current="page" href="{% url 'home' %}" >Home</a>
           </li>
+         
           <li class="nav-item dropbtn">
             <div class="dropdown">
               <a>Tutorials</a>
@@ -92,25 +94,23 @@
               </div>
             </div>
           </li>
+           {% endif %}
           {% if request.user.is_superuser %}
           <li class="nav-item">
             <a class="nav-link text-white" href="{% url 'article' %}">Articles</a>
           </li>
           {% endif %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Series
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item " href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item " href="#">Something else here</a></li>
-            </ul>
+          <li class="nav-item">
+            <a {% if request.user.is_authenticated %} hidden {% endif %} class="nav-link text-white" href="{% url 'signup' %}" tabindex="-1" aria-disabled="true">Signup</a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'logout_user' %}" tabindex="-1" aria-disabled="true">Logout</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'signup' %}" tabindex="-1" aria-disabled="true">Sign Up / Login</a>
+            <a class="nav-link text-white" href="{% url 'reset_password' %}" tabindex="-1" aria-disabled="true">Reset Password</a>
           </li>
+          {% endif %}
           
         </ul>
 

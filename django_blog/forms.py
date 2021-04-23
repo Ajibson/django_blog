@@ -29,6 +29,52 @@ class SignupForm(forms.ModelForm):
             raise ValidationError("Email already exist")
         return email
 
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+
+        if len(password) < 8:
+            raise ValidationError("Length of password is less than 8")
+        if password.isalpha():
+            raise ValidationError("Password should contains both letters and numbers")
+        if password.isnumeric():
+            raise ValidationError("Password should contains both letters and numbers")
+        return password
+
+
+class LoginForm(forms.Form):
+    email = forms.CharField(max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput(),max_length=20)
+
+class password_resetForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(),max_length=20)
+    password2 = forms.CharField(widget=forms.PasswordInput(),max_length=20)
+
+    def clean(self):
+        cleaned_data = super(password_resetForm, self).clean()
+        password = self.cleaned_data.get("password")
+        password2 = self.cleaned_data.get("password2")
+        print(password, password2)
+        if len(password) < 8:
+            raise ValidationError("Length of password is less than 8")
+        if password.isalpha():
+            raise ValidationError("Password should contains both letters and numbers")
+        if password.isnumeric():
+            raise ValidationError("Password should contains both letters and numbers")
+        if password != password2:
+            raise ValidationError(_("Password must match"))
+        
+        return cleaned_data
+
+
+        
+
+
+    
+
+
+
+
+
     
 
     

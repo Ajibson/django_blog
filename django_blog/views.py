@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 from .forms import *
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 import json
 from django.db.models import Q
-
-
+from django.contrib.auth import authenticate,login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 
 def signup(request):
@@ -18,11 +19,35 @@ def signup(request):
             user.set_password(form.cleaned_data.get("password"))
             print(username)
             user.save()
+            return redirect("home")
         else:
             print("not valid")
     else:
         form = SignupForm()
     return render(request, 'django_blog/signup.html', {'form':form})
+
+def Login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            #password = form.cleaned_data.get("password")
+            password = request.POST['password']
+            user = authenticate(email = form.cleaned_data.get("email"), password = form.cleaned_data.get("password"))
+            print(user, email, password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                msg = "Invaid credential supplied"
+                return render(request, 'django_blog/login.html', {'form':form, 'msg':msg})
+        else:
+            pass
+    else:
+        form = LoginForm()
+    return render(request, 'django_blog/login.html', {'form':form})
+
+
 
 
 def get_client_ip(request):
@@ -33,7 +58,7 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-
+@login_required
 def home(request):
     try:
         articles = blogs.objects.filter(status = 'Published').order_by('-date_published')
@@ -42,11 +67,16 @@ def home(request):
         return render(request, 'django_blog/base.html')
     return render(request, 'django_blog/base.html', {'articles':articles})
 
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
 def tutorial(request,slug_title):
     try:
         articles = blogs.objects.filter(status = 'Published').order_by('-date_published')
         article = blogs.objects.get(slug = slug_title)
         number_of_claps = clap.objects.get(blog = article.pk).number_of_clap
+        comments = comment.objects.filter(article = article).order_by('-date_commented')
         ip = get_client_ip(request)
         ip_check = [i.ip for i in article.views.all()]
         if IpModel.objects.filter(ip = ip).exists() and ip in ip_check:
@@ -61,7 +91,7 @@ def tutorial(request,slug_title):
     except (blogs.DoesNotExist, clap.DoesNotExist):
         messages.error(request, 'No blog post')
         return render(request, 'django_blog/base.html')
-    return render(request, 'django_blog/blog.html', {'article':article, 'claps':number_of_claps, 'articles':articles})
+    return render(request, 'django_blog/blog.html', {'article':article, 'claps':number_of_claps, 'articles':articles, 'comments':comments})
 
 def article(request):
     if request.method == 'POST':
@@ -133,3 +163,30 @@ def view_404(request, exception):
     return render(request, '404.html')
 
 
+def comments(request):
+
+    if request.method == "POST":
+        article = blogs.objects.get(pk = request.POST.get('blog_id')) #Article primary key
+        name = request.user
+        content = request.POST.get("content")
+        new_comment = comment(name = name, content = content, article = article)
+        new_comment.save()
+        
+
+    return HttpResponse("Hello")
+
+
+def reset_password(request):
+    if request.method == "POST":
+        form = password_resetForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            password = form.cleaned_data.get("password")
+            user.set_password(password)
+            user.save()
+            logout(request)
+            return redirect("login")
+    else:
+        form = password_resetForm()
+
+    return render(request, 'django_blog/reset_password.html', {'form':form})

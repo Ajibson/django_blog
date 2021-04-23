@@ -7,6 +7,8 @@ from django_resized import ResizedImageField
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True, blank=True)
@@ -68,3 +70,22 @@ class clap(models.Model):
         return (self.blog.title + "   " + str(self.number_of_clap) + ' claps')
 
 #class comment(models.Model):
+
+@receiver(post_save, sender=User)
+def activate_user(sender, instance, created, **kwargs):
+    print(instance)
+    if created:
+        instance.is_active = True
+        instance.save()
+
+class comment(models.Model):
+    name = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    content = models.TextField()
+    date_commented = models.DateTimeField(default=timezone.now, blank=True)
+    article = models.ForeignKey(blogs, on_delete=models.CASCADE, blank=True)
+    reply = models.TextField(blank = True)
+
+    def __str__(self):
+        return self.content
+
+

@@ -97,7 +97,7 @@
 {% block content %}
 
 <div class="container mt-5 bg-white">
-    <div class="row justify-content-center shadow mb-5 " id="main" >
+    <div class="row justify-content-center shadow mb-5" id="main">
         
           <div class="row text-left mb-3 col-10 rounded bg-white  pt-3">
               
@@ -163,8 +163,29 @@
                   </li>
                 </ul> 
                 </small>
-                <button>submit</button>
+
                 
+                <div class="row bg-secondary rounded mx-2">
+                  <h4 class=" text-left text-white col-3 py-3">Comments ({{comments|length}})</h4>
+                  <button class="btn btn-block bg-info my-3 text-white col-4 col-sm-3 offset-5 offset-sm-6" onclick="showcomment()">Add a Comment</button>
+                </div>
+                
+                <form method="POST" action="/" id="comment_form" style="display:none" name="{{article.pk}}">
+                {% csrf_token %}
+                <!--<label class="px-0 my-3">Comment with the email: {{request.user.username}}</label>-->
+                <textarea name="content" id="content" class="form-control border-0 border-bottom px-0 py-3 mt-3" rows="3" placeholder="Write your comment"></textarea>
+                <div class="d-flex justify-content-end">
+                <a class="px-0 my-4 text-info" style="text-decoration:none " onclick="showcomment()">Cancel</a>
+                <button class="btn btn-block bg-info my-3 text-white mx-3" type="" onclick="comment_form()">Submit</button>
+                </div>
+                </form>
+                <div class="mt-4">
+                <h2>Previous Comments</h2>
+                {% for comment in comments %}
+                  {{comment.date_commented}}<br>
+                  {{comment.name.username}} : {{ comment.content }} <br><br>
+                {% endfor %}
+                </div>
           </div>
          
       </div>
@@ -182,10 +203,22 @@
 <script src="{% static 'js/main.js' %}"></script>
 
 <script>
-  function claps(){
-    console.log("form submitted!");
-    create_post();
-  }
+  function comment_form(){
+        var content = document.getElementById('content').value
+        console.log(content)
+        $.ajax({
+            type:'POST',
+            url:'{% url "comment_form"  %}',
+            data:
+            {
+              content : $("#content").val() ,blog_id:$('#comment_form').attr("name"),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success:function(){
+              location.reload();
+                    }
+            })
+   };
 
 
 function create_post(){
@@ -203,5 +236,14 @@ function create_post(){
                     }
             })
         };
+
+  function showcomment() {
+  var x = document.getElementById("comment_form");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
 </script>
 {% endblock %}

@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
@@ -141,3 +141,7 @@ CKEDITOR_CONFIGS = {
 }
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT = 'home'
+#LOGOUT_REDIRECT_URL = 'login'
