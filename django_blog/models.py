@@ -38,7 +38,7 @@ class blogs(models.Model):
     date_published = models.DateField(default = timezone.now, blank=True)
     date_created = models.DateField(default = timezone.now, blank=True)
     author = models.CharField(max_length=200, default='Aremu Azeez Taiwo', blank=True)
-    image = ResizedImageField(size=[3000, 1740], upload_to='article_pics',force_format='PNG')
+    image = ResizedImageField(size=[3000, 1740], upload_to='article_pics',force_format='PNG', blank=True)
     content = RichTextUploadingField(blank=True)
     slug = models.SlugField(blank=True)
     tags = TaggableManager(blank=True)
