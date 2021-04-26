@@ -8,6 +8,13 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+from django.core.mail import send_mail, BadHeaderError
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+
 
 def signup(request):
     if request.method == "POST":
@@ -190,3 +197,55 @@ def reset_password(request):
         form = password_resetForm()
 
     return render(request, 'django_blog/reset_password.html', {'form':form})
+
+
+def view_500(request):
+    return render(request, 'vtu/500.html')
+
+
+def password_reset_request(request):
+    if request.method == "POST":
+        form = ResetForms(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data.get('email')
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = "registration/password_reset_email.html"
+                    c = {
+                    "email":user.email,
+                    'domain':'zuri-task.herokuapp.com',
+                    'site_name': 'zuri-task.herokuapp.com',
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "user": user,
+                    'token': default_token_generator.make_token(user),
+                    'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, 'myvtuservice@gmail.com' , [user.email], fail_silently=False)
+                        return redirect("password_reset_done")
+                    except BadHeaderError:
+                        messages.error(request, 'please try again')
+                        return redirect('reset_password')
+            else:
+                messages.error(request, 'The email is not registered')
+                return redirect('reset_password')                         
+    else:
+        form = ResetForms()
+    return render(request, "registration/password_reset_form.html", {"password_reset_form":form})
+
+def password_reset_confirm(request,uidb64,token):
+    user_pk = json.loads(urlsafe_base64_decode(uidb64))
+    user = User.objects.get(pk=user_pk)
+    if request.method == 'POST':
+        form = NewPasswordResetForm(request.POST)
+        if form.is_valid():
+            password1 = form.cleaned_data['password1']
+            user.set_password(password1)
+            user.save()
+            return redirect('password_reset_complete')
+    else:
+        form = NewPasswordResetForm()
+    return render(request, 'registration/password_reset_confirm.html', {'form':form})  

@@ -165,3 +165,12 @@ LOGIN_REDIRECT = 'home'
      'API_SECRET': os.environ.get('API_SECRET'),
       }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' '''
+
+
+EMAIL_BACKEND = str(os.environ.get('EMAIL_BACKEND'))
+EMAIL_HOST = str(os.environ.get('EMAIL_HOST'))
+EMAIL_HOST_USER = str(os.environ.get('EMAIL_HOST_USER'))
+EMAIL_HOST_PASSWORD =  str(os.environ.get('EMAIL_HOST_PASSWORD'))
+EMAIL_PORT = str(os.environ.get('EMAIL_PORT'))
+EMAIL_USE_TLS = str(os.environ.get('EMAIL_USE_TLS'))
+DEFAULT_FROM_MAIL =str(os.environ.get('EMAIL_HOST_USER'))

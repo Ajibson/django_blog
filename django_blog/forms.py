@@ -69,7 +69,31 @@ class password_resetForm(forms.Form):
         
 
 
+class ResetForms(forms.Form):
+    email = forms.EmailField()
+
+
+        
+class NewPasswordResetForm(forms.Form):
+    password1 = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput())
     
+    def clean(self):
+        cleaned_data = super(password_resetForm, self).clean()
+        password = self.cleaned_data.get("password")
+        password2 = self.cleaned_data.get("password2")
+        print(password, password2)
+        if len(password) < 8:
+            raise ValidationError("Length of password is less than 8")
+        if password.isalpha():
+            raise ValidationError("Password should contains both letters and numbers")
+        if password.isnumeric():
+            raise ValidationError("Password should contains both letters and numbers")
+        if password != password2:
+            raise ValidationError(_("Password must match"))
+        
+        return cleaned_data
+
 
 
 
