@@ -14,4 +14,4 @@ This website has the following features anabled
 
 The website link https://zuri-task.herokuapp.com/
 
-to serve as the admin use(aremz@gmail.com,ajibola04)
+to serve as the admin use(az@gmail.com,azeez)
