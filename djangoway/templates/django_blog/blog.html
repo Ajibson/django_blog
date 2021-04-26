@@ -164,12 +164,14 @@
                 </ul> 
                 </small>
 
-                
+                {% if request.user.is_authenticated %}
                 <div class="row bg-secondary rounded mx-2">
                   <h4 class=" text-left text-white col-3 py-3">Comments ({{comments|length}})</h4>
                   <button class="btn btn-block bg-info my-3 text-white col-4 col-sm-3 offset-5 offset-sm-6" onclick="showcomment()">Add a Comment</button>
                 </div>
-                
+                {% else %}
+                <h4>Please <a href="{% url 'login' %}" style="text-decoration:none">login </a>to comment on the post</h4>
+                {% endif %}
                 <form method="POST" action="/" id="comment_form" style="display:none" name="{{article.pk}}">
                 {% csrf_token %}
                 <!--<label class="px-0 my-3">Comment with the email: {{request.user.username}}</label>-->
@@ -186,6 +188,7 @@
                   {{comment.name.username}} : {{ comment.content }} <br><br>
                 {% endfor %}
                 </div>
+
           </div>
          
       </div>

@@ -58,7 +58,7 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-@login_required
+
 def home(request):
     try:
         articles = blogs.objects.filter(status = 'Published').order_by('-date_published')
@@ -162,7 +162,7 @@ def view_404(request, exception):
 
     return render(request, '404.html')
 
-
+@login_required
 def comments(request):
 
     if request.method == "POST":
@@ -175,7 +175,7 @@ def comments(request):
 
     return HttpResponse("Hello")
 
-
+@login_required
 def reset_password(request):
     if request.method == "POST":
         form = password_resetForm(request.POST)

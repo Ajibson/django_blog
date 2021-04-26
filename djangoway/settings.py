@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '*-h9sn)nx@js9^lgnn5rm1ksbq5^f&gyjr3(k&(&8icc1@vkj='   #os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -159,9 +159,9 @@ LOGIN_REDIRECT = 'home'
 #LOGOUT_REDIRECT_URL = 'login'
 
 
-CLOUDINARY_STORAGE = {
+'''CLOUDINARY_STORAGE = {
      'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
      'API_KEY': os.environ.get('API_KEY'),
      'API_SECRET': os.environ.get('API_SECRET'),
       }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' '''
