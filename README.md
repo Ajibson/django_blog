@@ -5,7 +5,7 @@ This website has the following features anabled
 
 1. User registration anabled with the required fields of email and password
 2. User login enabled with required field of email and password
-3. Password reset feature anabled for logged in users
+3. Password reset feature anabled for user not logged in and logged in users
 4. Only admin can add an article both through the admin dashboard and with the link available if logged in user is admin
 5. comment section enabled and thus user can comment on each blog post if user is logged in
 6. Appreciation can also be done with the clapping features added
