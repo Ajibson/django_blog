@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','zuri-blog-task.herokuapp.com',"zuri-task.herokuapp.com"]
 
@@ -164,7 +164,7 @@ CLOUDINARY_STORAGE = {
      'API_KEY': os.environ.get('API_KEY'),
      'API_SECRET': os.environ.get('API_SECRET'),
       }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' 
 
 
 EMAIL_BACKEND = str(os.environ.get('EMAIL_BACKEND'))
