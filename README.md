@@ -12,6 +12,6 @@ This website has the following features anabled
 7. blog search functionality has been added with tags keywords 
 8. Blog urls and views test has been done successfully
 
-The website link https://zuri-blog-task.herokuapp.com/
+The website link https://zuri-task.herokuapp.com/
 
-to serve as the admin use(aremz@gmail.com,ajibola04)
+to serve as the admin use(az@gmail.com,azeez)
