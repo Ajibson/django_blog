@@ -24,7 +24,7 @@ SECRET_KEY = '*-h9sn)nx@js9^lgnn5rm1ksbq5^f&gyjr3(k&(&8icc1@vkj='   #os.environ.
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','zuri-blog-task.herokuapp.com']
+ALLOWED_HOSTS = ['localhost','zuri-blog-task.herokuapp.com',"zuri-task.herokuapp.com"]
 
 AUTH_USER_MODEL = "django_blog.User"
 # Application definition
