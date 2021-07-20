@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','zuri-blog-task.herokuapp.com',"zuri-task.herokuapp.com"]
 
@@ -35,8 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
     'django_blog',
     'cloudinary',
     'ckeditor_uploader',
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'djangoway.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['djangoway/templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,7 +129,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+#STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -159,12 +159,12 @@ LOGIN_REDIRECT = 'home'
 #LOGOUT_REDIRECT_URL = 'login'
 
 
-CLOUDINARY_STORAGE = {
+'''CLOUDINARY_STORAGE = {
      'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
      'API_KEY': os.environ.get('API_KEY'),
      'API_SECRET': os.environ.get('API_SECRET'),
       }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'   '''
 
 
 EMAIL_BACKEND = str(os.environ.get('EMAIL_BACKEND'))

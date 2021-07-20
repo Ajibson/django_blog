@@ -1,0 +1,83 @@
+{% extends 'django_blog/base.html' %}
+{% block style %}
+
+<style>
+  body{
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  #the_list>li:nth-of-type(3)>a{
+    text-decoration: underline;
+  }
+  
+</style>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible text-center mt-4" role="alert">
+              {{message}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% for error in form.errors %}
+            {{ error }}
+    {% endfor %}
+  
+        <div class="card col-md-12 col-12">
+            <div class="card-header h4">
+              Write Blog Post
+            </div>
+            <div class="card-body">
+              
+                <form action="{% url 'edit_blog' article.slug %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label class="mb-2">Title</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="title" value="{{article.title}}">
+                  </div>
+                  <div class="form-group mt-3">
+                    <label  class="mb-2">Image</label>
+                    <input type="file" class="form-control" id="exampleInputPassword1" name="image" value="">
+                    <small>{{article.image.url}}</small>
+                  </div>
+                  <div class="form-group mt-3">
+                    <label class="mb-2" for="exampleCheck1">Content</label>
+                   <textarea class="form-control " name = 'content'> {{article.content}}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="mb-2 mt-3">Tags</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="tags" value="{% for tag in article.tags.all %}{{tag}}, {% endfor %}">
+                    <small>comma separated tags</small>
+                  </div>
+                  <div class="form-group">
+                    <label class="mb-2 mt-3">Status</label>
+                    <select class="form-control d-flex" name = 'status'>
+                      <option value="Drafted" {% if article.status == 'Drafted' %} selected {% endif %}>Draft</option>
+                      <option value="Published" {% if article.status == 'Published' %} selected {% endif %}>Publish</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-block form-control btn-info mt-3 ">Submit</button>
+                </form>
+              
+              
+            </div>
+          </div>
+    </div>
+
+</div>
+
+
+<script>
+  CKEDITOR.replace( 'content' );
+</script>
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends 'django_blog/base.html' %}
+
+{% block style %}
+<style>
+    body{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'Arial', 'sans-serif';
+    }
+    #the_list>li:nth-child(5)>a{
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container justify-content-center d-flex">
+    <div class="row shadow mt-3 col-8">
+        <h3 class=" my-4"><u>About Author</u></h3>
+        <p>
+            Aremu Azeez Taiwo
+        </p>
+    </div>
+</div>
+
+{% endblock %}
+

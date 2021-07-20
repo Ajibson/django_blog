@@ -24,11 +24,10 @@ def signup(request):
             username = form.cleaned_data.get("email")
             user.username = username
             user.set_password(form.cleaned_data.get("password"))
-            print(username)
             user.save()
             return redirect("home")
         else:
-            print("not valid")
+            return render(request, 'django_blog/signup.html', {'form':form})
     else:
         form = SignupForm()
     return render(request, 'django_blog/signup.html', {'form':form})
@@ -37,11 +36,7 @@ def Login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get("email")
-            #password = form.cleaned_data.get("password")
-            password = request.POST['password']
             user = authenticate(email = form.cleaned_data.get("email"), password = form.cleaned_data.get("password"))
-            print(user, email, password)
             if user is not None:
                 login(request, user)
                 return redirect('home')
@@ -49,7 +44,7 @@ def Login(request):
                 msg = "Invaid credential supplied"
                 return render(request, 'django_blog/login.html', {'form':form, 'msg':msg})
         else:
-            pass
+            return render(request, 'django_blog/login.html', {'form':form})
     else:
         form = LoginForm()
     return render(request, 'django_blog/login.html', {'form':form})
@@ -159,10 +154,10 @@ def claps(request):
 def search(request):
     q = request.GET['search_value'].split()  # I am assuming space separator in URL like "random stuff"
     query = Q()
-    for word in q:
+    for word in q: #if user input 'python django' q = ['python', 'django']
         query = query | Q(title__icontains=word, status = 'Published') | Q(tags__name__icontains=word, status = 'Published')
+    print(query)
     results = blogs.objects.filter(query).distinct()
-
     return render(request, 'django_blog/base.html', {'articles':results})
 
 def view_404(request, exception):
@@ -193,6 +188,8 @@ def reset_password(request):
             user.save()
             logout(request)
             return redirect("login")
+        else:
+            return render(request, 'django_blog/reset_password.html', {'form':form})
     else:
         form = password_resetForm()
 
@@ -200,7 +197,7 @@ def reset_password(request):
 
 
 def view_500(request):
-    return render(request, 'vtu/500.html')
+    return render(request, '500.html')
 
 
 def password_reset_request(request):
@@ -231,7 +228,7 @@ def password_reset_request(request):
                         return redirect('reset_password')
             else:
                 messages.error(request, 'The email is not registered')
-                return redirect('reset_password')                         
+                return redirect('Reset_password')                         
     else:
         form = ResetForms()
     return render(request, "registration/password_reset_form.html", {"password_reset_form":form})

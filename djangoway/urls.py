@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('django_blog.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-        path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
     
 ]
 
