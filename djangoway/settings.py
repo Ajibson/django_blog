@@ -128,11 +128,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -164,7 +164,7 @@ LOGIN_REDIRECT = 'home'
      'API_KEY': os.environ.get('API_KEY'),
      'API_SECRET': os.environ.get('API_SECRET'),
       }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'   '''
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'  '''
 
 
 EMAIL_BACKEND = str(os.environ.get('EMAIL_BACKEND'))
