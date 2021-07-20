@@ -159,12 +159,12 @@ LOGIN_REDIRECT = 'home'
 #LOGOUT_REDIRECT_URL = 'login'
 
 
-'''CLOUDINARY_STORAGE = {
+CLOUDINARY_STORAGE = {
      'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
      'API_KEY': os.environ.get('API_KEY'),
      'API_SECRET': os.environ.get('API_SECRET'),
       }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'  '''
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' 
 
 
 EMAIL_BACKEND = str(os.environ.get('EMAIL_BACKEND'))
